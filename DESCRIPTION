@@ -1,0 +1,11 @@
+Name: octave_frida
+Version: 1.0.0
+Date: 2026-11-18
+Author: Yu Hongbo <yuhongbo@member.fsf.org>, CNOCTAVE <cnoctave@qq.com>
+Maintainer: Yu Hongbo <yuhongbo@member.fsf.org>, CNOCTAVE <cnoctave@qq.com>
+Title: Frida wrapper for GNU Octave
+Description: Run Frida GumJS instrumentation scripts from GNU Octave.  A
+ system Python with frida installed is required; no runtime is bundled.
+Depends: octave (>= 8.0.0)
+License: GPLv3+
+Url: https://github.com/CNOCTAVE/octave_frida

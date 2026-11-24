@@ -1,0 +1,7 @@
+octave_frida 1.0.0 (2026-11-18)
+===============================
+
+* Initial release.
+* frida_run() drives one Frida session through the Python API and returns a
+  JSONL message log.
+* Bundled qrc_hook.js example used while reversing LyricTools.exe.

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+  <meta name="theme-color" content="#00B4FF">
+  <title>octave_frida文档</title>
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2.17.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+  <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div id="q-app">
+    <q-layout view="hHh LpR fFf">
+      <q-header elevated class="bg-primary text-white">
+        <q-toolbar class="bg-primary text-white q-ny-md shadow-2">
+          <q-btn stretch flat label="Octave中文网" @click="goTo('https://cnoctave.top')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="octave_frida文档" @click="scrollToTop()"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-space></q-space>
+          <q-separator dark vertical></q-separator>
+          <q-btn-dropdown stretch flat icon="translate" label="切换文档语言">
+            <q-list>
+              <q-item clickable v-close-popup @click="goTo('index.html')">
+                <q-item-section>
+                  <q-item-label>zh-CN 简体中文</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="中文版Octave文档" @click="goTo('https://docs.cnoctave.top')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="学术交流论坛" @click="goTo('https://forum.cnoctave.top')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="新闻" @click="goTo('https://octave.org/news.html')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="使用方法" @click="goTo('https://wiki.octave.org/Using_Octave')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="免费下载" @click="goTo('https://octave.org/download')"></q-btn>
+        </q-toolbar>
+      </q-header>
+      <q-drawer class="bg-primary" show-if-above v-model="leftDrawerOpen" side="left" bordered elevated>
+        <q-list class="title1 text-white bg-primary"><q-item clickable v-ripple
+            @click="goToID('#homepage')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>项目首页</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#repo_install')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>软件源安装</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#online_install')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>在线安装</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#source_code_install')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>源码安装</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#how_to_use')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>如何使用</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#dependencies')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>依赖库</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#function_usage')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>函数用法</q-item-section></q-item><q-item clickable v-ripple
+            @click="goToID('#gumjs_tutorial')"><q-item-section avatar><q-icon
+                name="code" /></q-item-section><q-item-section>GumJS 脚本教程</q-item-section></q-item><q-item clickable
+            v-ripple @click="goToID('#gumjs_api')"><q-item-section avatar><q-icon
+                name="api" /></q-item-section><q-item-section>GumJS API</q-item-section></q-item><q-item clickable
+            v-ripple @click="goToID('#qrc_example')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>QRC 解密示例</q-item-section></q-item><q-item clickable
+            v-ripple @click="goToID('#code')"><q-item-section avatar><q-icon
+                name="help" /></q-item-section><q-item-section>示例代码</q-item-section></q-item></q-list>
+      </q-drawer>
+      <q-page-container>
+        <div style="position: relative;">
+          <q-img src="banner0.png" spinner-color="white" style="width: 100%; height: 300px;"></q-img>
+          <div class="q-mx-md rainbow-text"
+            style="line-height: 300px; font-size: 100px; position: absolute; left: 0%; top: 0%;">octave_frida文档</div>
+        </div>
+        <div class="container">
+          <div class="main">
+
+            <div id="homepage" class="text-h5 q-ma-md text-red-10">octave_frida 让你在 GNU Octave 中直接运行 Frida GumJS
+              脚本，观察进程内部行为，并把消息回传为 JSONL 日志。</div>
+
+            <div id="repo_install" class="title1 q-ma-md text-primary">软件源安装</div>
+            <p class="q-ma-md">本包可通过 Octave 软件源安装：</p>
+            <p class="q-ma-md">&gt;&gt; pkg install -forge octave_frida</p>
+            <div id="online_install" class="title1 q-ma-md text-primary">在线安装</div>
+            <p class="q-ma-md">&gt;&gt; pkg install
+              'https://github.com/CNOCTAVE/octave_frida/releases/download/1.0.0/octave_frida.tar.gz'</p>
+            <div id="source_code_install" class="title1 q-ma-md text-primary">源码安装</div>
+            <p class="q-ma-md">&gt;&gt; pkg install octave_frida.tar.gz -local</p>
+            <div id="how_to_use" class="title1 q-ma-md text-primary">如何使用</div>
+            <p class="q-ma-md">&gt;&gt; pkg load octave_frida</p>
+
+            <div id="dependencies" class="title1 q-ma-md text-primary">依赖库</div>
+            <p class="q-ma-md">全平台一致：需要一个已安装 <code>frida</code> 的系统 Python（<code>pip install frida</code>）。</p>
+            <p class="q-ma-md">若自动探测找不到，可用环境变量 <code>FRIDA_PYTHON</code> 指向已装 frida 的解释器（例如虚拟环境的 python）。</p>
+            <div id="function_usage" class="title1 q-ma-md text-primary">函数用法</div>
+            <p class="q-ma-md">下列每个函数均按「调用方法 → 含义 → 示例」说明。使用前先执行 <code>pkg load octave_frida</code>。带 <code>[ ]</code>
+              的参数可省略。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">1. frida_init ()</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>ctx = frida_init ()</code></p>
+            <p class="q-ma-md"><b>含义</b>　探测一个能 <code>import frida</code> 的系统 Python 解释器（只读系统已安装的库，不注入任何自带运行时），返回上下文结构体 <code>ctx</code>。字段：<code>python</code>（解释器命令）、<code>version</code>（Frida 版本）、<code>driver</code> / <code>devices_driver</code>（Python 脚本路径）。探测顺序：<code>FRIDA_PYTHON</code> → <code>python3</code> → <code>python</code> → <code>py -3</code>。结果会缓存；找不到可用解释器时报错，提示 pip 安装 frida 或设置 <code>FRIDA_PYTHON</code>。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; ctx = frida_init()
+&gt;&gt; ctx.version
+ans = 17.26.4
+&gt;&gt; ctx.python
+ans = python</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">2. frida_version ()</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>frida_version ()</code></p>
+            <p class="q-ma-md"><b>含义</b>　打印当前生效的 Frida 版本与所用 Python，无返回值。用于确认系统 frida 库确实被找到。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; frida_version()
+Frida 17.26.4 (python: python)</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">3. frida_devices ()</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>devices = frida_devices ()</code></p>
+            <p class="q-ma-md"><b>含义</b>　返回 Frida 设备名称的 cell 数组，包含本地设备与已连接的远程设备。未连接远程设备时通常至少有 <code>local</code>
+              一项。不启动进程，可安全调用。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; d = frida_devices()
+&gt;&gt; numel(d)
+ans = 3
+&gt;&gt; d{1}
+ans = local</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">4. frida_run (cfg)</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>res = frida_run (cfg)</code></p>
+            <p class="q-ma-md"><b>含义</b>　运行一次 Frida 注入会话。 <code>cfg</code> 是结构体，字段如下：</p>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">字段</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">含义</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">默认</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>script</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">GumJS 脚本路径（必填，文件必须存在）</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">—</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>target</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">进程名、PID 或 argv 列表</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>notepad.exe</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>mode</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>spawn</code>（新建）或 <code>attach</code>（附加）
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>attach</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>duration</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">会话持续秒数</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">5</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>device</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">设备名，留空用默认设备</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">空串</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>stop_file</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">停止标志文件；外部写入内容即可提前结束会话</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">空串</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>pid_hint</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">多进程同名时的 PID 提示</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">0</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>kill_on_exit</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">结束时是否终止目标进程</td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>true</code></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="q-ma-md">返回 <code>res</code>：<code>res.status</code>（含
+              <code>ok</code>、<code>error</code>、<code>version</code>、<code>pid</code>、<code>messages</code>）、<code>res.message_file</code>（JSONL
+              日志路径，交给 <code>frida_messages</code> 读取）、<code>res.config_file</code>、<code>res.raw_output</code>。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; cfg = struct('script','qrc_hook.js','target','LyricTools.exe', ...
+                 'mode','spawn','duration',5);
+&gt;&gt; r = frida_run(cfg);
+&gt;&gt; r.status.ok
+ans = 1
+&gt;&gt; r.status.messages
+ans = 1
+&gt;&gt; m = frida_messages(r);</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">5. frida_messages (result)</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>msgs = frida_messages (result)</code></p>
+            <p class="q-ma-md"><b>含义</b>　读取 <code>frida_run</code> 产生的 JSONL 消息日志，逐行解析为结构体，返回 cell 数组。每个元素是一条 GumJS 通过
+              <code>send()</code> 发出的消息。没有消息或日志文件不存在时返回空 cell <code>{}</code>，不报错。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; r = frida_run(cfg);
+&gt;&gt; m = frida_messages(r);
+&gt;&gt; numel(m)
+ans = 1
+&gt;&gt; m{1}
+ans =  标量结构体，含 type / payload 等字段</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">6. frida_example_qrc (target, duration)</div>
+            <p class="q-ma-md">
+              <b>调用方法</b>　<code>res = frida_example_qrc (target)</code>　或　<code>res = frida_example_qrc (target, duration)</code>
+            </p>
+            <p class="q-ma-md"><b>含义</b>　便捷入口：把包内附带的 <code>examples/qrc_hook.js</code> 以 <code>attach</code> 模式附加到
+              <code>target</code>，持续 <code>duration</code> 秒（默认 5），返回与 <code>frida_run</code> 相同的结果结构体。该脚本 hook 了
+              <code>CreateFileW</code> 与 <code>ReadFile</code>，用于观察 LyricTools.exe 读取 QRC 的过程——即 QRC 解密逆向中的注入步骤。</p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; res = frida_example_qrc('LyricTools.exe', 5);
+&gt;&gt; msgs = frida_messages(res);
+&gt;&gt; numel(msgs)
+ans = 1</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">7. frida_selftest ()</div>
+            <p class="q-ma-md"><b>调用方法</b>　<code>frida_selftest ()</code></p>
+            <p class="q-ma-md"><b>含义</b>　打印 Frida 版本与所用 Python，并枚举所有设备（逐个列出名称）。不 spawn、不 attach 任何进程，可在任意环境安全运行。无返回值。
+            </p>
+            <p class="q-ma-md"><b>示例</b></p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; frida_selftest()
+Frida 17.26.4 via python
+devices: 3
+  - local
+  - …</pre>
+
+            <div class="text-subtitle2 text-grey-8 q-mt-lg">内部辅助函数（一般无需直接调用）</div>
+            <p class="q-ma-md"><code>frida_fwd (p)</code> 把 Windows 路径的反斜杠转正斜杠，供 Python
+              使用；<code>frida_quote_python (py)</code> 为解释器命令按需加引号，供 <code>system()</code> 使用。公开函数已封装这些细节，通常直接使用上面的 1～7
+              即可。</p>
+
+            <div id="gumjs_tutorial" class="title1 q-ma-md text-primary">GumJS 脚本零基础教程</div>
+            <p class="q-ma-md">这一节从零开始讲怎么写 GumJS 脚本，不假设你有 Frida 经验。GumJS 是 Frida 注入到目标进程里执行的
+              JavaScript，它能读写目标进程内存、拦截函数调用，并把结果发回 Octave。你唯一要做的事：写一个 <code>.js</code> 文件，把路径交给 <code>frida_run</code> 的
+              <code>cfg.script</code>。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">第 1 步：最小脚本与输出</div>
+            <p class="q-ma-md">一个 GumJS 脚本就是一个普通的 JS 文件。<code>'use strict';</code> 开启严格模式（推荐固定加上）。<code>send()</code>
+              是脚本与 Octave 通信的核心：它把一个对象发回 Octave，Octave 侧用 <code>frida_messages(r)</code> 读成结构体 cell。</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">// hello.js —— 最小脚本
+'use strict';
+send({ type: 'hello', text: 'GumJS 已加载' });</pre>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; cfg = struct('script','hello.js','target','C:/Windows/System32/notepad.exe', ...
+                 'mode','spawn','duration',2);
+&gt;&gt; r = frida_run(cfg); m = frida_messages(r);
+&gt;&gt; m{1}.message.payload
+ans =  包含 type='hello'、text='GumJS 已加载' 的结构体</pre>
+            <p class="q-ma-md">要点：<code>send()</code> 的参数会被 <code>frida_driver.py</code> 逐行写成 JSONL（每行一条消息，附时间戳
+              <code>ts</code>）。<code>m{1}.message.payload</code> 就是你 send 的那个对象；<code>m{1}.data</code>
+              是随消息附带的二进制数据（十六进制字符串）。没有 <code>send()</code> 的脚本照样能跑，只是 <code>frida_messages()</code> 返回空 cell。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">第 2 步：找到要 hook 的函数</div>
+            <p class="q-ma-md">拦截函数前要先拿到它在内存里的地址。Frida 17 的标准写法是两步：先用 <code>Process.getModuleByName()</code> 取模块，再用模块对象的
+              <code>getExportByName()</code> 取导出函数地址。</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">var k32 = Process.getModuleByName('kernel32.dll');   // 拿到模块
+var addr = k32.getExportByName('LoadLibraryExW');     // 拿到函数地址（NativePointer）
+
+// 旧版写法在 Frida 17 会抛 "not a function"，不要用：
+// Module.getExportByName('kernel32.dll', 'LoadLibraryExW')   ✗</pre>
+            <p class="q-ma-md">这里是最常见的坑。很多网上教程用的是旧 API <code>Module.getExportByName(module, name)</code>，在 Frida 17 里会报
+              <code>TypeError: not a function</code>。记住新写法：<b>先拿模块，再在模块上找导出</b>。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">第 3 步：Interceptor.attach —— 拦截函数</div>
+            <p class="q-ma-md"><code>Interceptor.attach(addr, callbacks)</code> 把钩子装到函数上。两个回调：</p>
+            <ul class="q-ma-md">
+              <li><code>onEnter(args)</code>：目标函数<b>被调用时</b>触发。<code>args</code> 是参数数组，按调用约定从左到右排列（<code>args[0]</code>
+                是第一个参数）。</li>
+              <li><code>onLeave(retval)</code>：目标函数<b>返回时</b>触发。<code>retval</code> 是返回值，可用
+                <code>retval.replace(x)</code> 改写。</li>
+            </ul>
+            <p class="q-ma-md"><code>this</code> 对象在 onEnter 和 onLeave 之间共享同一次调用的数据——在 onEnter 里存
+              <code>this.xxx = ...</code>，onLeave 里还能读到。这是传递参数值到返回处的标准手法。</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">Interceptor.attach(addr, {
+  onEnter: function (args) {
+    this.name = args[0].readUtf16String();   // 读第 1 个参数（UTF-16 字符串）
+  },
+  onLeave: function (retval) {
+    send({ name: this.name, handle: retval.toString() });
+    // retval.replace(ptr(0));              // 想改返回值就取消注释
+  }
+});</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">第 4 步：参数与内存读写</div>
+            <p class="q-ma-md"><code>args</code> 里的每个元素都是 <code>NativePointer</code>（ native 指针），不是普通的 JS
+              值。要读它指向的内容，用指针方法：</p>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">方法</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">作用</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readUtf16String()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按 UTF-16 读字符串（Windows Unicode API 常用）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readCString()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按 UTF-8/ANSI 读以 0 结尾的字符串</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readU8()</code> / <code>readS32()</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 1 字节无符号 / 4 字节有符号整数</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readByteArray(n)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 n 字节，返回 ArrayBuffer，可交给
+                    <code>send(msg, buf)</code> 第二参数</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>add(n)</code> / <code>sub(n)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">指针前后移动 n 字节</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>toString()</code> / <code>toInt32()</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">取地址字符串 / 转成整数值</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="q-ma-md">读内存可能踩到非法地址而抛异常，<b>务必用 <code>try/catch</code> 包住</b>——否则一条坏指针会让整个脚本停止，后面的消息都发不出来。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">第 5 步：完整脚本（可直接运行）</div>
+            <p class="q-ma-md">把前四步合起来，就是一个完整、健壮的脚本。包里已附带两份可直接运行的教学脚本：<code>inst/examples/tutorial_01_hello.js</code>（最小
+              send）与 <code>inst/examples/tutorial_02_hook.js</code>（拦截 + 读参数 + 改返回值）。后者全文如下：</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">'use strict';
+try {
+  var k32 = Process.getModuleByName('kernel32.dll');
+  Interceptor.attach(k32.getExportByName('LoadLibraryExW'), {
+    onEnter: function (args) {
+      this.name = args[0].readUtf16String();
+    },
+    onLeave: function (retval) {
+      send({ type: 'load', name: this.name, handle: retval.toString() });
+      // retval.replace(ptr(0));  // 取消注释可让加载失败
+    }
+  });
+  send({ type: 'ready' });
+} catch (e) {
+  send({ type: 'error', message: String(e) });
+}</pre>
+            <p class="q-ma-md">结构上就四块：<b>① <code>'use strict'</code> 开头 → ② <code>try</code> 里找模块和函数 → ③
+                <code>Interceptor.attach</code> 装钩子 → ④ <code>send({type:'ready'})</code> 报告就绪，<code>catch</code>
+                兜底报错</b>。任何 GumJS 脚本都是这个骨架的变体。</p>
+            <p class="q-ma-md">实测（spawn notepad，2 秒）：收到 30 条消息，1 条 <code>ready</code> 加 29 条 <code>load</code>，例如
+              <code>name=kernel32 handle=0x7ff9fc040000</code>。</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">&gt;&gt; cfg = struct('script','tutorial_02_hook.js','target','C:/Windows/System32/notepad.exe', ...
+                 'mode','spawn','duration',2);
+&gt;&gt; r = frida_run(cfg); m = frida_messages(r);
+&gt;&gt; numel(m)
+ans = 30</pre>
+
+            <div class="text-h6 text-primary q-mt-lg">第 6 步：在 Octave 里跑脚本的完整流程</div>
+            <p class="q-ma-md">写好 <code>.js</code> 文件后，Octave 侧固定三步：</p>
+            <pre class="q-ma-md" style="background:#f5f5f5;color:#333;border-radius:4px;padding:8px 12px;">pkg load octave_frida
+cfg = struct('script','my_hook.js','target','C:/Windows/System32/notepad.exe', ...
+             'mode','spawn','duration',3);   % 组织配置
+r = frida_run(cfg);                           % 运行会话
+m = frida_messages(r);                        % 读回所有消息
+for i = 1:numel(m)
+  fprintf('%s\n', jsonencode(m{i}.message.payload));
+endfor</pre>
+            <p class="q-ma-md"><code>spawn</code> 表示新建进程再注入（推荐，能抓到启动阶段），<code>attach</code> 表示附加到已运行进程（此时
+              <code>target</code> 可传进程名或 PID；同名多进程时用 <code>pid_hint</code> 指定）。目标进程要等它真的调用了被 hook 的函数，才会产生消息。</p>
+
+            <div id="gumjs_api" class="title1 q-ma-md text-primary">GumJS API</div>
+            <p class="q-ma-md">这一节列出 GumJS（Frida 17.26.4 注入脚本运行时）支持的主要 API，按用途分类，便于写脚本时查阅。完整权威清单见 Frida 官方文档 <a
+                href="https://frida.re/docs/javascript-api/" target="_blank">frida.re/docs/javascript-api</a>。下表的
+              <code>get*</code> 系列找不到目标时抛异常，<code>find*</code> 系列返回 <code>null</code>。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">一、运行时信息</div>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Frida.version</code> /
+                    <code>Frida.heapSize</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">Frida 版本字符串 / 当前私有堆大小（字节）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Script.runtime</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">脚本运行时：<code>QJS</code> 或 <code>V8</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Script.evaluate(name, src)</code> /
+                    <code>Script.load(name, src)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">在全局作用域执行 JS 源码 / 作为 ES 模块加载</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Script.nextTick(fn, ...args)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">当前原生线程退出 JS 运行时时执行 fn</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Script.pin()</code> /
+                    <code>Script.unpin()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">引用计数式地阻止 / 允许脚本被卸载</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Script.bindWeak(v, fn)</code> /
+                    <code>Script.unbindWeak(id)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">监视 JS 值被 GC 时回调 / 取消监视</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="text-h6 text-primary q-mt-lg">二、Process / Thread / Module</div>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.id</code> / <code>arch</code> /
+                    <code>platform</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">进程 PID / 架构（ia32,x64,arm,arm64）/
+                    平台（windows,linux,darwin…）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.pageSize</code> /
+                    <code>pointerSize</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">内存页大小 / 指针字节数，用于写可移植脚本</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.mainModule</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">主可执行文件的 Module 对象</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.getCurrentDir()</code> /
+                    <code>getHomeDir()</code> / <code>getTmpDir()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">当前工作目录 / 用户主目录 / 临时目录路径</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.isDebuggerAttached()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">是否有调试器附加，返回布尔值</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.getCurrentThreadId()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">当前线程的 OS 级 ID</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.enumerateThreads()</code> /
+                    <code>getThreadById(id)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举所有线程 / 按 ID 取线程</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.enumerateModules()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举已加载模块，返回 Module 数组</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><b><code>Process.getModuleByName(name)</code></b>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按名取 Module（<b>Frida 17 正确的模块入口</b>）；另有
+                    <code>findModuleByName</code> 返回 null 版</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.getModuleByAddress(addr)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按地址取所在 Module</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Process.enumerateRanges(prot)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举匹配保护属性的内存区间（如 <code>'rw-'</code>）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>module.getExportByName(name)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">取模块导出函数绝对地址（<b>Frida 17 风格</b>）；另有
+                    <code>findExportByName</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>module.enumerateExports()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举导出，每项含 type/name/address</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>module.enumerateImports()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举导入，每项含 type/name/module/address/slot</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>module.enumerateSymbols()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举符号（平台受限），含 name/address/size 等</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>module.enumerateRanges(prot)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">枚举该模块内匹配保护属性的区间</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Thread.sleep(sec)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">暂停当前线程执行，单位秒</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="q-ma-md" style="color:#c62828"><b>Frida 17 坑：</b>旧的全局写法
+              <code>Module.findExportByName('kernel32.dll','fn')</code> 已废弃，会报 <code>not a function</code>。正确写法是<b>先用
+                <code>Process.getModuleByName()</code> 取模块，再在模块对象上 <code>getExportByName()</code></b>——见上一节教程第 2 步。</p>
+
+            <div class="text-h6 text-primary q-mt-lg">三、内存读写（NativePointer 与 Memory）</div>
+            <p class="q-ma-md"><code>args</code>、函数地址、模块基址都是
+              <code>NativePointer</code>。读写内存主要用它的实例方法；<code>Memory</code> 提供静态的内存管理与扫描。</p>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>ptr(s)</code> /
+                    <code>new NativePointer(s)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">把字符串/数字转成 NativePointer</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readU8()</code> / <code>readS8()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 1 字节无符号 / 有符号</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readU16()</code> / <code>readU32()</code> /
+                    <code>readU64()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 2 / 4 / 8 字节无符号（S 系列为有符号）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readFloat()</code> /
+                    <code>readDouble()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读浮点 / 双精度</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readPointer()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读一个指针值，返回 NativePointer</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readByteArray(n)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 n 字节返回 ArrayBuffer（<b>是 NativePointer 方法，不是
+                      Memory 静态方法</b>）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>readCString()</code> /
+                    <code>readUtf8String()</code> / <code>readUtf16String()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">读 C / UTF-8 / UTF-16 字符串，可传长度参数；还有 Windows 专属
+                    <code>readAnsiString()</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>writeU8(v)</code> … <code>writeU64(v)</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">写对应宽度的整数，与 read 系列对称</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>writeByteArray(buf)</code> /
+                    <code>writeUtf16String(s)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">写字节数组 / 写 UTF-16 字符串</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>add(n)</code> / <code>sub(n)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">指针前后移动 n 字节</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>and/or/xor/shr/shl/not</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">位运算</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>toInt32()</code> / <code>toUInt32()</code> /
+                    <code>toString(radix)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">转整数 / 转字符串（默认 16 进制）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>isNull()</code> / <code>equals(p)</code> /
+                    <code>compare(p)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">判空 / 相等 / 比较</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.alloc(size)</code> /
+                    <code>allocUtf8String(s)</code> / <code>allocUtf16String(s)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">在目标进程分配内存 / 分配并写入字符串</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.copy(dst, src, n)</code> /
+                    <code>Memory.dup(addr, n)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">拷贝内存 / 复制一段内存到新分配区</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.protect(addr, n, prot)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">修改内存保护属性（<code>rwx</code> 等）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.patchCode(addr, n, fn)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">安全打补丁：Frida 处理代码签名与 W^X</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.scan(addr, n, pattern, cb)</code> /
+                    <code>scanSync(...)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">异步 / 同步搜索字节模式（如 <code>'98 25 b0 ? ?'</code>）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Memory.findPointers(ranges, values)</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">在一组区间中查找指针值</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="text-h6 text-primary q-mt-lg">四、数据类型与函数</div>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>int64(v)</code> / <code>uint64(v)</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">构造 64 位整数，支持 add/sub/and/or/xor/shr/shl/toNumber 等
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">
+                    <code>new NativeFunction(addr, ret, args[, abi])</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">把地址包装成可调用的原生函数；类型含
+                    <code>pointer/int/uint/int32/float/double/void</code> 等</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">
+                    <code>new NativeCallback(fn, ret, args[, abi])</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">把 JS 函数包装成原生函数指针，可交给
+                    <code>Interceptor.replace</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>new SystemFunction(fn, ret, args)</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">调用 Frida 内部 Gum API</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>ArrayBuffer</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">标准 JS 二进制缓冲区，配合 readByteArray / send 第二参数</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="text-h6 text-primary q-mt-lg">五、Instrumentation（拦截与跟踪）</div>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Interceptor.attach(target, cb)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">在函数上装钩子，cb 含 <code>onEnter(args)</code> /
+                    <code>onLeave(retval)</code>；返回 listener，可 <code>detach()</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Interceptor.replace(target, repl)</code>
+                  </td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">用 NativeCallback
+                    完全替换函数实现；<code>revert(target)</code> 撤销</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Interceptor.flush()</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">显式提交所有挂起的 hook 修改</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>this.returnAddress</code> /
+                    <code>context</code> / <code>threadId</code> / <code>depth</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">回调 this 上的调用上下文：返回地址、寄存器上下文、线程 ID、调用深度；Windows 还有
+                    <code>lastError</code></td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Stalker.follow(tid[, opt])</code> /
+                    <code>unfollow(tid)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按线程跟踪指令执行 / 停止跟踪</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Stalker.exclude(range)</code> /
+                    <code>include(range)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">排除 / 只包含指定地址区间</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>Stalker.parse(data)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">解析 Stalker 事件块为可读事件数组</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>ApiResolver(type)</code> /
+                    <code>enumerateMatches(q)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">按模式批量解析 API，type 有 <code>module/swift/objc</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>DebugSymbol.fromAddress(addr)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">把地址解析成调试符号信息</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="text-h6 text-primary q-mt-lg">六、通信、输出与工具</div>
+            <table class="q-ma-md" style="border-collapse:collapse;width:100%;">
+              <thead>
+                <tr style="background:#eef4fb;">
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;width:34%;">API</th>
+                  <th style="border:1px solid #ccc;padding:6px 10px;text-align:left;">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>send(obj[, data])</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">发消息给 Octave；第二参数可带 ArrayBuffer。本包里逐条落进 JSONL</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>recv(callback)</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">接收宿主机（Octave 侧驱动）发来的消息</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>rpc.exports</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">导出函数供宿主机同步 RPC 调用</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>console.log/warn/error</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">向驱动 stdout 打印日志（Octave 侧见
+                    <code>res.raw_output</code>）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>hexdump(addr[, opt])</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">格式化十六进制转储，opt 可给 length/ansi 等</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>setTimeout / setInterval</code> /
+                    <code>clearTimeout / clearInterval</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">定时与周期执行任务（毫秒）</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>new File(path[, mode])</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">在目标进程侧读写文件；同类还有 Socket、SqliteDatabase 等</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #ccc;padding:6px 10px;"><code>ObjC</code> / <code>Java</code> /
+                    <code>Swift</code></td>
+                  <td style="border:1px solid #ccc;padding:6px 10px;">iOS/macOS 与 Android 平台专属的运行时操作 API，Windows 上不用
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="q-ma-md">此外还有 CPU 指令相关
+              API（<code>Instruction</code>、<code>X86Writer</code>/<code>Arm64Writer</code> 及各架构
+              Relocator）、<code>CModule</code>/<code>RustModule</code>（用 C/Rust
+              编写热回调）、<code>MemoryAccessMonitor</code>、<code>Cloak</code>、<code>Profiler</code>/<code>Sampler</code>
+              等进阶能力。日常写 hook 脚本最常用的是本页第二、三、五、六类。</p>
+
+            <div id="qrc_example" class="title1 q-ma-md text-primary">QRC 解密示例（图文对照）</div>
+            <p class="q-ma-md"><a href="LyricTools.exe">LyricTools.exe</a> 产生的 <a
+                href="test.qrc"><code>test.qrc</code></a> 是一份本地加密歌词文件。经逆向与实测，完整链路如下：</p>
+            <p class="q-ma-md">11 字节 magic <code>98 25 b0 ac e3 02 83 68 e8 fc 6c</code>
+              → 256 字节 XOR 前置混淆（表位于 exe 偏移 0x2e33d0，索引 <code>(i²+22i+148)&amp;255</code>）
+              → 私有位序 3DES-ECB 解密（24 字节密钥 <code>!@#)(*$%123ZXC!@!@#)(NHL</code>）
+              → zlib inflate → UTF-8 XML。</p>
+            <p class="q-ma-md">样本文件：<code>test.qrc</code> 共 3603 字节，去掉 magic 后 body 为 3592 字节（8 字节对齐）；解密后 XML 为 7084
+              字节，以 <code>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;QrcInfos&gt;</code> 开头。</p>
+
+            <q-card class="q-my-md"><q-card-section>
+                <div class="text-h6 text-primary">图 1　frida_run 调用链</div><img src="screenshots/04_pipeline.png"
+                  style="max-width:100%;border:1px solid #ddd;" />
+              </q-card-section></q-card>
+
+            <div id="code" class="title1 q-ma-md text-primary">逆向示例：观察 LyricTools.exe 读入 QRC</div>
+            <p class="q-ma-md">&gt;&gt; pkg load octave_frida<br>
+              &gt;&gt; frida_selftest()<br>
+              Frida 17.26.4 via python<br>
+              devices: 3<br>
+              &gt;&gt; cfg = struct('script','qrc_hook.js','target','LyricTools.exe','mode','spawn','duration',5);<br>
+              &gt;&gt; r = frida_run(cfg); m = frida_messages(r);</p>
+            <q-card class="q-my-md"><q-card-section>
+                <div class="text-h6 text-primary">图 2　frida_selftest 输出</div><img src="screenshots/01_selftest.png"
+                  style="max-width:100%;border:1px solid #ddd;" />
+              </q-card-section></q-card>
+            <q-card class="q-my-md"><q-card-section>
+                <div class="text-h6 text-primary">图 3　真实 Frida 会话</div><img src="screenshots/02_session.png"
+                  style="max-width:100%;border:1px solid #ddd;" />
+              </q-card-section></q-card>
+            <q-card class="q-my-md"><q-card-section>
+                <div class="text-h6 text-primary">图 4　qrc_hook.js 关键代码</div><img src="screenshots/03_hook_script.png"
+                  style="max-width:100%;border:1px solid #ddd;" />
+              </q-card-section></q-card>
+
+          </div>
+        </div>
+        <q-toolbar class="bg-grey-8 text-white q-my-md shadow-2">
+          <q-btn stretch flat label="版权所有 © 2024-2026 CNOCTAVE / Yu Hongbo"
+            @click="goTo('https://cnoctave.top')"></q-btn>
+          <q-separator dark vertical></q-separator>
+          <q-btn stretch flat label="CC BY-ND 4.0"
+            @click="goTo('https://creativecommons.org/licenses/by-nd/4.0/')"></q-btn>
+        </q-toolbar>
+      </q-page-container>
+    </q-layout>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.17.0/dist/quasar.umd.prod.js"></script>
+  <script>
+    const App = {
+      data() {
+        return {
+          leftDrawerOpen: true,
+          scrollToTop() { window.scrollTo(0, 0); },
+          goTo(t) { window.open(t, '_blank'); },
+          goToID(t) { window.open(t, '_self'); }
+        };
+      }
+    };
+    Vue.createApp(App).use(Quasar).mount('#q-app');
+  </script>
+</body>
+
+</html>

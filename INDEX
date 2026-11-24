@@ -1,0 +1,15 @@
+octave_frida >> Frida instrumentation from GNU Octave
+Setup
+ frida_init
+ frida_version
+Devices
+ frida_devices
+Sessions
+ frida_run
+ frida_messages
+Examples and tests
+ frida_example_qrc
+ frida_selftest
+Internal helpers
+ frida_fwd
+ frida_quote_python
