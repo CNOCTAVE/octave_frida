@@ -19,7 +19,7 @@ jobs:
         with:
           path: 'octave_frida'
       # uncomment this on demand
-      - run: sudo chmod a+x octave_frida/src/configure
+      # - run: sudo chmod a+x octave_frida/src/configure
       # uncomment this on demand
       - run: sudo chmod -R a+x octave_frida/inst
       - run: tar --warning=no-file-changed --exclude='octave_frida/.git' --exclude='octave_frida/.github' -czvf octave_frida.tar.gz octave_frida
